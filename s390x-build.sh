@@ -79,3 +79,10 @@ cd php
 make
 echo ----------------------------------------------------------------安装PHP----------------------------------------------------------------
 sudo make insatll
+echo ----------------------------------------------------------------配置PHP----------------------------------------------------------------
+sudo cp php.ini-production /usr/local/etc/php.ini
+sudo mv /usr/local/etc/php-fpm.conf.default /usr/local/etc/php-fpm.conf
+sudo mv /usr/local/etc/php-fpm.d/www.conf.default /usr/local/etc/php-fpm.d/www.conf
+sudo echo "pid = run/php-fpm.pid" >> /usr/local/etc/php-fpm.conf
+sudo sed -i "s/listen = 127.0.0.1:9000/listen = var\/run\/php-fpm.sock\//" /usr/local/etc/php-fpm.d/www.conf
+echo ----------------------------------------------------------------PHP安装完成----------------------------------------------------------------
