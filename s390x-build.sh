@@ -22,7 +22,7 @@ apt install gcc make openssl curl libssl-dev libxml2-dev libzip-dev libcurl4-ope
 	libwebp-dev libonig-dev libsqlite3-dev libsodium-dev libargon2-dev
 apt -y install make cmake gcc g++ perl bison libaio-dev libncurses5 libncurses5-dev libnuma-dev libssl-dev
 if [ $? -ne 0 ];then
-  echo 请在su模式下执行本脚本(可用sudo su命令)
+  echo 请在su模式下执行本脚本\(可用sudo su命令\)
   rm -rf s390x-build
   exit
 fi
