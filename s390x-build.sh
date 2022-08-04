@@ -1,7 +1,7 @@
 #!/bin/bash
 echo ----------------------------------------------------------------脚本仅供个人使用----------------------------------------------------------------
 echo 作者: jerjjj@github
-echo 版本: 0.4
+echo 版本: 0.5
 echo 发布位置:https://github.com/jerjjj/s390x_build_tool
 echo 适用版本:理论上所有ubuntu适用,但其实也只有s390x架构的计算机需要这么麻烦
 echo 注意事项:请在su模式下执行本脚本,不要用sudo命令
@@ -86,12 +86,13 @@ if [ $? -ne 0 ];then
 fi
 echo ----------------------------------------------------------------解压nginx源码----------------------------------------------------------------
 tar zxvf nginx-1.22.0.tar.gz
-mv nginx-1.22.0.tar.gz nginx
+mv nginx-1.22.0 nginx
 if [ $? -ne 0 ];then
   echo nginx源码解压失败
 fi
 rm -rf nginx-1.22.0.tar.gz
 echo ----------------------------------------------------------------编译nginx源码----------------------------------------------------------------
+useradd nginx
 cd nginx
 ./configure --prefix=/usr/local/nginx --with-http_ssl_module --with-stream --with-mail=dynamic
 make
@@ -100,8 +101,7 @@ if [ $? -ne 0 ];then
 fi
 echo ----------------------------------------------------------------安装nginx----------------------------------------------------------------
 make install
-ln -s /opt/dotnet/dotnet /usr/local/bin
-/usr/local/nginx/sbin/nginx -c /usr/local/nginx/conf/nginx.conf
+ln -s /usr/local/nginx/sbin/nginx /usr/bin/
 if [ $? -ne 0 ];then
   echo nginx 安装失败
   ((BF++))
@@ -150,7 +150,7 @@ if [ $? -ne 0 ];then
 fi
 echo ----------------------------------------------------------------安装PHP----------------------------------------------------------------
 make insatll
-if [ $? -ne 0 ];then
+if [ $? -ne 0 ];then 
   echo php安装失败
   ((BF++))
 else
