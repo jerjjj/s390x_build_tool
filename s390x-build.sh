@@ -1,5 +1,5 @@
 #!/bin/bash
-rundir=$(cd $(dirname $0); pwd)#获取脚本执行目录
+rundir=$(cd $(dirname $0); pwd) #获取脚本执行目录
 touch v.txt
 wzx=$(sed -n '1p' v.txt)
 if [ $wzx -ne Verified ];then
