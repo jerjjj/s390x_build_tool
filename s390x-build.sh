@@ -1,4 +1,16 @@
 #!/bin/bash
+rundir=$(cd $(dirname $0); pwd)#获取脚本执行目录
+touch v.txt
+wzx=$(sed -n '1p' v.txt)
+if [ $wzx -ne Verified ];then
+  sed -i "$wzx/Verified" "$(cd $(dirname $0); pwd)"/v.txt
+  touch build-log.log
+  ./s390x-build.sh > "$rundir"/build-log.log 2>&1
+  exit
+fi
+if [ $wzx -eq Verified ];then
+  rm -rf v.txt
+fi
 echo ----------------------------------------------------------------脚本仅供个人使用----------------------------------------------------------------
 echo 作者: jerjjj@github
 echo 版本: 0.5
@@ -27,7 +39,7 @@ if [ $? -ne 0 ];then
   exit
 fi
 echo ----------------------------------------------------------------开始拉取python源码----------------------------------------------------------------
-cd s390x-build
+cd "$rundir"/s390x-build
 git clone https://github.com/python/cpython.git -b main
 if [ $? -ne 0 ];then
   echo 源码拉取失败
@@ -50,7 +62,7 @@ else
   ((BS++))
 fi
 echo ----------------------------------------------------------------开始下载nodejs源码----------------------------------------------------------------
-cd ~/s390x-build/
+cd "$rundir"/s390x-build
 wget https://npmmirror.com/mirrors/node/v16.16.0/node-v16.16.0.tar.gz
 if [ $? -ne 0 ];then
   echo nodejs源码拉取失败
@@ -79,7 +91,7 @@ else
   ((BS++))
 fi
 echo ----------------------------------------------------------------开始下载nginx源码----------------------------------------------------------------
-cd ~/s390x-build/
+cd "$rundir"s390x-build
 wget http://nginx.org/download/nginx-1.22.0.tar.gz
 if [ $? -ne 0 ];then
   echo nginx源码下载失败
@@ -110,7 +122,7 @@ else
   ((BS++))
 fi
 echo ----------------------------------------------------------------开始下载PHP源码----------------------------------------------------------------
-cd ~/s390x-build/
+cd "$rundir"s390x-build
 wget https://www.php.net/distributions/php-8.1.8.tar.gz
 if [ $? -ne 0 ];then
   echo php源码下载失败
@@ -163,7 +175,7 @@ mv /usr/local/etc/php-fpm.d/www.conf.default /usr/local/etc/php-fpm.d/www.conf
 echo "pid = run/php-fpm.pid" >> /usr/local/etc/php-fpm.conf
 sed -i "s/listen = 127.0.0.1:9000/listen = var\/run\/php-fpm.sock\//" /usr/local/etc/php-fpm.d/www.conf
 echo ----------------------------------------------------------------开始下载MySQL源码----------------------------------------------------------------
-cd ~/s390x-build/
+cd "$rundir"/s390x-build
 wget https://downloads.mysql.com/archives/get/p/23/file/mysql-boost-5.7.38.tar.gz
 if [ $? -ne 0 ];then
   echo MySQL源码下载失败
@@ -205,10 +217,10 @@ if [ $? -ne 0 ];then
   echo MySQL安装失败
   ((BF++))
 else
-  echo ----------------------------------------------------------------MySQL安装完成(未初始化)----------------------------------------------------------------
+  echo ----------------------------------------------------------------MySQL安装完成\(未初始化\)----------------------------------------------------------------
   ((BS++))
 fi
 echo ----------------------------------------------------------------清理工作目录----------------------------------------------------------------
-cd
+cd "$rundir"
 rm -rf s390x-build
-echo ----------------------------------------------------------------脚本运行完成，计划编译$BA,编译成功$BS,编译失败$BF----------------------------------------------------------------
+echo ----------------------------------------------------------------脚本运行完成，计划编译"$BA",编译成功"$BS",编译失败"$BF",log位置"$rundir"/build-log.log----------------------------------------------------------------
