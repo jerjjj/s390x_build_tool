@@ -3,7 +3,7 @@ rundir=$(cd $(dirname $0); pwd) #获取脚本执行目录
 touch v.txt
 wzx=$(sed -n '1p' v.txt)
 if [ $wzx -ne Verified ];then
-  sed -i "$wzx/Verified" "$(cd $(dirname $0); pwd)"/v.txt
+  sed -i "$wzx/Verified" "$rundir"/v.txt
   touch build-log.log
   ./s390x-build.sh > "$rundir"/build-log.log 2>&1
   exit
